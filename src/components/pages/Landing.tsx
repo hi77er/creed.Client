@@ -1,21 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { Counter } from '../features/counter/Counter';
+import './Landing.css';
 
-function App() {
+const Landing = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="Landing">
+      <header className="Landing-header">
+        <img src={logo} className="Landing-logo" alt="logo" />
         <Counter />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Edit <code>src/Landing.tsx</code> and save to reload.
         </p>
         <span>
           <span>Learn </span>
           <a
-            className="App-link"
+            className="Landing-link"
             href="https://reactjs.org/"
             target="_blank"
             rel="noopener noreferrer"
@@ -24,7 +24,7 @@ function App() {
           </a>
           <span>, </span>
           <a
-            className="App-link"
+            className="Landing-link"
             href="https://redux.js.org/"
             target="_blank"
             rel="noopener noreferrer"
@@ -33,7 +33,7 @@ function App() {
           </a>
           <span>, </span>
           <a
-            className="App-link"
+            className="Landing-link"
             href="https://redux-toolkit.js.org/"
             target="_blank"
             rel="noopener noreferrer"
@@ -42,7 +42,7 @@ function App() {
           </a>
           ,<span> and </span>
           <a
-            className="App-link"
+            className="Landing-link"
             href="https://react-redux.js.org/"
             target="_blank"
             rel="noopener noreferrer"
@@ -55,4 +55,4 @@ function App() {
   );
 }
 
-export default App;
+export default Landing;
