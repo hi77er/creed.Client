@@ -1,3 +1,10 @@
+import axios from "axios";
+import client from "../../../services/httpClient";
+
+export interface FetchTokenRequestBody {
+  email: string;
+  password: string;
+}
 
 export interface FetchTokenResult {
   accessToken: string | null;
@@ -13,7 +20,7 @@ export interface User {
   address: string;
 }
 
-export interface FetchUserResult {
+export interface FetchCurrentUserResult {
   user: User | null;
 }
 
@@ -24,16 +31,12 @@ export interface AuthorizeState {
   status: 'loading' | 'authorized' | 'unauthorized'
 }
 
-export const fetchUserAsync = () => {
-  return new Promise<FetchUserResult>((resolve) =>
-    setTimeout(() => resolve({ user: null }), 500)
-  );
+export const fetchCurrentUserAsync = async () => {
+  var response = await client.get('/api/user/current');
+  return { user: response.data };
 }
 
-export const fetchTokenAsync = () => {
-  return new Promise<FetchTokenResult>((resolve) =>
-    setTimeout(() => resolve(
-      { accessToken: null, refreshToken: null }
-    ), 500)
-  );
+export const fetchTokenAsync = async (data: FetchTokenRequestBody) => {
+  var response = await client.post('/auth/signin', data);
+  return { accessToken: response.data.accessToken, refreshToken: null };
 }
