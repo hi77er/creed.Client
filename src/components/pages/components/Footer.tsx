@@ -2,7 +2,7 @@ import { Container, Navbar, Nav } from 'react-bootstrap';
 
 const Footer = () => {
   return (
-    <Navbar fixed="bottom" bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark">
       <Container>
         <Nav className="justify-content-center" activeKey="/home">
           <Nav.Item>

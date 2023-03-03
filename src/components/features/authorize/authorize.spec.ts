@@ -8,7 +8,7 @@ describe('authorize reducer', () => {
   const initialState: AuthorizeState = {
     accessToken: null,
     refreshToken: null,
-    user: null,
+    errorMessage: null,
     status: 'unauthorized'
   };
 
