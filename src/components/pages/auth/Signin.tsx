@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from '../../../app/hooks/hooks';
-import type { } from 'redux-thunk/extend-redux';
-import {
-  errorMessage,
-  fetchToken,
-  resetErrorMessage
-} from '../../features/authorize/authorizeSlice';
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import GoogleButton from 'react-google-button';
+import type { } from 'redux-thunk/extend-redux';
+import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import { getGoogleUrl } from '../../../services/googleOauthService';
+import { errorMessage, fetchToken, resetErrorMessage } from '../../features/authorize/authorizeSlice';
 import './Signin.css';
 
 const Signin = () => {

@@ -1,18 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../app/store';
 import {
-  fetchTokenAsync,
-  signoutAsync,
   AuthorizeState,
+  Error,
+  fetchTokenAsync,
+  refreshTokenAsync,
+  signoutAsync,
   FetchTokenRequestBody,
   FetchTokenResult,
+  RefreshTokenResult,
   SignoutResult,
-  Error
 } from './authorizeAPI';
 
 const initialState: AuthorizeState = {
-  accessToken: null,
-  refreshToken: null,
   errorMessage: null,
   status: 'unauthorized'
 };
@@ -26,11 +26,7 @@ export const fetchToken =
           email: params.email,
           password: params.password
         });
-        return {
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-          success: true
-        };
+        return { success: true };
       } catch (err: any) {
         return rejectWithValue({ errorMessage: "Wrong username or password!" });
       }
@@ -50,6 +46,19 @@ export const signout =
     }
   );
 
+export const refreshToken =
+  createAsyncThunk<SignoutResult, void, { rejectValue: Error }>(
+    'authorize/refresh',
+    async (_: void, { rejectWithValue }) => {
+      try {
+        const result = await refreshTokenAsync();
+        return { success: result.success };
+      } catch (err: any) {
+        return rejectWithValue({ errorMessage: "Refresh Token failed!" });
+      }
+    }
+  );
+
 export const authorizeSlice = createSlice({
   name: 'authorize',
   initialState,
@@ -61,9 +70,6 @@ export const authorizeSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       state.errorMessage = initialState.errorMessage;
-    },
-    setAccessToken: (state, action) => {
-      state.accessToken = action.payload;
     },
     postOAuthSuccess: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -80,48 +86,47 @@ export const authorizeSlice = createSlice({
     builder
       .addCase(fetchToken.pending, (state) => {
         state.status = 'loading';
-        state.accessToken = null;
-        state.refreshToken = null;
         state.errorMessage = null;
       })
-      .addCase(fetchToken.fulfilled, (state, action) => {
+      .addCase(fetchToken.fulfilled, (state) => {
         state.status = 'authorized';
-        state.accessToken = action?.payload?.accessToken ?? null;
-        state.refreshToken = action?.payload?.refreshToken ?? null;
         state.errorMessage = null;
       })
       .addCase(fetchToken.rejected, (state, action) => {
         state.status = 'unauthorized';
-        state.accessToken = null;
-        state.refreshToken = null;
         state.errorMessage = action.payload?.errorMessage ?? null;
       })
-      .addCase(signout.pending, (state, action) => {
+      .addCase(signout.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(signout.fulfilled, (state) => {
         state.status = initialState.status;
-        state.accessToken = initialState.accessToken;
-        state.refreshToken = initialState.refreshToken;
         state.errorMessage = initialState.errorMessage;
       })
       .addCase(signout.rejected, (state, action) => {
         state.status = 'unauthorized';
-        state.accessToken = null;
-        state.refreshToken = null;
+        state.errorMessage = action.payload?.errorMessage ?? null;
+      })
+      .addCase(refreshToken.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(refreshToken.fulfilled, (state) => {
+        state.status = 'authorized';
+        state.errorMessage = null;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.status = 'unauthorized';
         state.errorMessage = action.payload?.errorMessage ?? null;
       });
   },
 });
 
-export const { postOAuthSuccess, resetErrorMessage, setAccessToken } = authorizeSlice.actions;
-export const authorizeReducer = authorizeSlice.reducer;
+export const { postOAuthSuccess, resetErrorMessage } = authorizeSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const authStatus = (state: RootState) => state.authorizer?.status;
-export const accessToken = (state: RootState) => state.authorizer?.accessToken;
 export const errorMessage = (state: RootState) => state.authorizer?.errorMessage;
 
 export default authorizeSlice.reducer;

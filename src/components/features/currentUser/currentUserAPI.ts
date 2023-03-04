@@ -25,11 +25,11 @@ export interface CurrentUserState {
 }
 
 export const fetchCurrentUserAsync = async () => {
-  client.interceptors.request.use((config) => {
-    const token = store.getState().authorizer.accessToken;
-    config.headers.Authorization = `bearer ${token}`;
-    return config;
-  });
+  // client.interceptors.request.use((config) => {
+  //   const token = store.getState().authorizer.accessToken;
+  //   config.headers.Authorization = `bearer ${token}`;
+  //   return config;
+  // });
 
   var response = await client.get('/api/user/current');
   return { currentUser: response.data };

@@ -1,15 +1,21 @@
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import { authStatus, signout } from '../../features/authorize/authorizeSlice';
+import { authStatus, refreshToken, signout } from '../../features/authorize/authorizeSlice';
 import { currentUser, resetCurrentUser } from '../../features/currentUser/currentUserSlice';
-import { useAppSelector, useAppDispatch } from '../../../app/hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import './Header.css';
+import { useEffect } from 'react';
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const status = useAppSelector(authStatus);
   const user = useAppSelector(currentUser);
+
+  useEffect(() => {
+    console.log('refreshing')
+    dispatch(refreshToken());
+  }, []);
 
   const logout = () => {
     dispatch(signout());
@@ -23,8 +29,8 @@ const Header = () => {
         <Navbar.Brand href="#home">Creed</Navbar.Brand>
         <Nav>
           <Nav.Link onClick={() => { navigate("/") }}>Home</Nav.Link>
-          <Nav.Link href="#features">Themes</Nav.Link>
-          <Nav.Link href="#pricing">Interview</Nav.Link>
+          {/* <Nav.Link href="#features">Themes</Nav.Link>
+          <Nav.Link href="#pricing">Interview</Nav.Link> */}
         </Nav>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">

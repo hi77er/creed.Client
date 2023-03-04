@@ -2,7 +2,6 @@ import { combineReducers, configureStore, ThunkAction, Action } from '@reduxjs/t
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import authorizeReducer from '../components/features/authorize/authorizeSlice';
-import counterReducer from '../components/features/counter/counterSlice';
 import currentUserReducer from '../components/features/currentUser/currentUserSlice';
 
 const persistConfig = {
@@ -14,7 +13,6 @@ export const rootReducer = combineReducers(
   {
     authorizer: authorizeReducer,
     currentUser: currentUserReducer,
-    counter: counterReducer,
   }
 );
 

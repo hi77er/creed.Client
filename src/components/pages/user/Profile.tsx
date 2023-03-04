@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { postOAuthSuccess } from '../../features/authorize/authorizeSlice';
 import { currentUser, fetchCurrentUser, userStatus } from '../../features/currentUser/currentUserSlice';
-import { useAppSelector, useAppDispatch } from '../../../app/hooks/hooks';
-import { useWindowDimensions } from '../../../app/hooks/useWindowDimensions';
+import { useAppSelector, useAppDispatch, useWindowDimensions } from '../../../app/hooks';
 import './Profile.css';
 
 const Profile = () => {
@@ -17,7 +16,7 @@ const Profile = () => {
       dispatch(postOAuthSuccess());
     }
 
-    if (!user && !triedGetUser) {
+    if (!triedGetUser) {
       dispatch(fetchCurrentUser());
       setTriedGetUser(true);
     }

@@ -6,8 +6,6 @@ import { AuthorizeState } from './authorizeAPI';
 
 describe('authorize reducer', () => {
   const initialState: AuthorizeState = {
-    accessToken: null,
-    refreshToken: null,
     errorMessage: null,
     status: 'unauthorized'
   };
