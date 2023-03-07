@@ -1,4 +1,5 @@
 import client from "../../../services/httpClient";
+import mem from "mem";
 
 export interface Error { errorMessage: string | null }
 export interface FetchTokenRequestBody { email: string; password: string; }
@@ -16,15 +17,18 @@ export const fetchTokenAsync = async (data: FetchTokenRequestBody) => {
 }
 
 export const refreshTokenAsync = async () => {
-  var response = await client.post('/auth/refresh');
-  console.log('refreshed!')
-  console.log(response)
-  return { success: response.data.success };
+  try {
+    var response = await client.post('/auth/refresh');
+    return { success: response.data.success };
+  }
+  catch (e) {
+    window.location.href = '/signin';
+    throw e;
+  }
 }
+export const memoizedRefreshToken = mem(refreshTokenAsync, { maxAge: 10000 });
 
 export const signoutAsync = async () => {
-  var response =
-    await client.get('/auth/signout');
-
+  var response = await client.get('/auth/signout');
   return { success: response.data.success };
 }

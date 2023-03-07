@@ -17,10 +17,10 @@ const Profile = () => {
     }
 
     if (!triedGetUser) {
-      dispatch(fetchCurrentUser());
       setTriedGetUser(true);
+      dispatch(fetchCurrentUser());
     }
-  }, [user, triedGetUser]);
+  }, [triedGetUser]);
 
   return (
     <div className="Profile container" style={{ minHeight: height }}>

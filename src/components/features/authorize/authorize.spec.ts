@@ -1,7 +1,4 @@
-// import authorizeReducer, {
-//   getToken,
-//   getCurrentUser
-// } from './authorizeSlice';
+import authorizeReducer, { fetchToken, signout } from './authorizeSlice';
 import { AuthorizeState } from './authorizeAPI';
 
 describe('authorize reducer', () => {
@@ -13,17 +10,15 @@ describe('authorize reducer', () => {
   // it('should handle initial state', () => {
   //   const actual = authorizeReducer(undefined, { type: 'unknown' });
   //   expect(actual).toEqual({
-  //     accessToken: null,
-  //     refreshToken: null,
   //     user: null,
   //     status: 'unauthorized'
   //   });
   // });
 
   // it('should handle increment', () => {
-  //   const actual = authorizeReducer(initialState, getToken({ accessToken: null, refreshToken: null }));
-  //   expect(actual.accessToken).toEqual(null);
-  //   expect(actual.refreshToken).toEqual(null);
+  //   const actual = authorizeReducer(initialState, fetchToken({ email: 'kdkrastev89@gmail.com' password: '!234Qwer' }));
+  //   expect(actual.status).toEqual('authorized');
+  //   expect(actual.errorMessage).toEqual(null);
   // });
 
   // it('should handle decrement', () => {

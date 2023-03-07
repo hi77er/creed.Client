@@ -1,4 +1,5 @@
 import client from "../../../services/httpClient";
+import privateClient from "../../../services/privateHttpClient";
 import { store } from '../../../app/store';
 
 export interface User {
@@ -31,6 +32,6 @@ export const fetchCurrentUserAsync = async () => {
   //   return config;
   // });
 
-  var response = await client.get('/api/user/current');
+  var response = await privateClient.get('/api/user/current');
   return { currentUser: response.data };
 }

@@ -4,11 +4,9 @@ import {
   AuthorizeState,
   Error,
   fetchTokenAsync,
-  refreshTokenAsync,
   signoutAsync,
   FetchTokenRequestBody,
   FetchTokenResult,
-  RefreshTokenResult,
   SignoutResult,
 } from './authorizeAPI';
 
@@ -42,19 +40,6 @@ export const signout =
         return { success: result.success };
       } catch (err: any) {
         return rejectWithValue({ errorMessage: "Signout failed!" });
-      }
-    }
-  );
-
-export const refreshToken =
-  createAsyncThunk<SignoutResult, void, { rejectValue: Error }>(
-    'authorize/refresh',
-    async (_: void, { rejectWithValue }) => {
-      try {
-        const result = await refreshTokenAsync();
-        return { success: result.success };
-      } catch (err: any) {
-        return rejectWithValue({ errorMessage: "Refresh Token failed!" });
       }
     }
   );
@@ -104,17 +89,6 @@ export const authorizeSlice = createSlice({
         state.errorMessage = initialState.errorMessage;
       })
       .addCase(signout.rejected, (state, action) => {
-        state.status = 'unauthorized';
-        state.errorMessage = action.payload?.errorMessage ?? null;
-      })
-      .addCase(refreshToken.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(refreshToken.fulfilled, (state) => {
-        state.status = 'authorized';
-        state.errorMessage = null;
-      })
-      .addCase(refreshToken.rejected, (state, action) => {
         state.status = 'unauthorized';
         state.errorMessage = action.payload?.errorMessage ?? null;
       });

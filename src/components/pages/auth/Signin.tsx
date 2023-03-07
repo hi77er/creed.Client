@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { Alert, Button, Form, Modal } from 'react-bootstrap';
-import GoogleButton from 'react-google-button';
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  GithubLoginButton,
+  MicrosoftLoginButton,
+} from "react-social-login-buttons";
 import type { } from 'redux-thunk/extend-redux';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
+import { getFacebookUrl } from '../../../services/facebookOauthService';
+import { getGithubUrl } from '../../../services/githubOauthService';
 import { getGoogleUrl } from '../../../services/googleOauthService';
 import { errorMessage, fetchToken, resetErrorMessage } from '../../features/authorize/authorizeSlice';
 import './Signin.css';
@@ -15,14 +22,16 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const errMessage = useAppSelector(errorMessage);
+  const facebookSigninUrl = getFacebookUrl((location.pathname as string) || '/');
+  const githubSigninUrl = getGithubUrl((location.pathname as string) || '/');
   const googleSigninUrl = getGoogleUrl((location.pathname as string) || '/');
 
   useEffect(() => {
     dispatch(resetErrorMessage());
   }, []);
 
-  let loginWithEmail = () => {
-    dispatch(fetchToken({ email, password }))
+  let loginWithEmail = (e: string, p: string) => {
+    dispatch(fetchToken({ email: e, password: p }))
       .then((result: any) => {
         if (result.payload.success)
           navigate("/user");
@@ -71,19 +80,21 @@ const Signin = () => {
                 <Button style={{ marginRight: 10 }} variant="light" onClick={() => navigate(-1)}>
                   Cancel
                 </Button>
-                <Button variant="warning" onClick={() => loginWithEmail()}>
+                <Button style={{ marginRight: 10 }} variant="warning" onClick={() => loginWithEmail(email, password)}>
                   Sign in
+                </Button>
+                <Button variant="primary" onClick={() => loginWithEmail("kdkrastev89@gmail.com", "!234Qwer")}>
+                  Shortcut
                 </Button>
               </div>
             </div>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Or use another provider:</Form.Label>
-              <GoogleButton
-                style={{ width: '100%' }}
-                className='google-signin-btn'
-                onClick={() => { window.location.href = googleSigninUrl }}
-              />
+              <Form.Label>Use another provider:</Form.Label>
+              <GithubLoginButton onClick={() => { window.location.href = githubSigninUrl }} style={{ marginBottom: 15 }} />
+              {/* <MicrosoftLoginButton onClick={() => { window.location.href = facebookSigninUrl }} /> */}
+              <FacebookLoginButton onClick={() => { window.location.href = facebookSigninUrl }} style={{ marginBottom: 15 }} />
+              <GoogleLoginButton onClick={() => { window.location.href = googleSigninUrl }} />
             </Form.Group>
 
           </Modal.Body>
