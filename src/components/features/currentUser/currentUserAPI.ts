@@ -17,21 +17,17 @@ export interface FetchCurrentUserError {
 
 export interface FetchCurrentUserResult {
   user: User | null;
+  loginProvider: null | 'local' | 'facebook' | 'github' | 'google';
 }
 
 export interface CurrentUserState {
+  status: 'loading' | 'found' | 'notfound';
+  loginProvider: null | 'local' | 'facebook' | 'github' | 'google';
   currentUser: User | null;
   errorMessage: string | null;
-  status: 'loading' | 'found' | 'notfound';
 }
 
 export const fetchCurrentUserAsync = async () => {
-  // client.interceptors.request.use((config) => {
-  //   const token = store.getState().authorizer.accessToken;
-  //   config.headers.Authorization = `bearer ${token}`;
-  //   return config;
-  // });
-
   var response = await privateClient.get('/api/user/current');
-  return { currentUser: response.data };
+  return { currentUser: response.data, loginProvider: response.data?.sessions[0]?.authStrategy };
 }

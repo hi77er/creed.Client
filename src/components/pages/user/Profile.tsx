@@ -12,15 +12,17 @@ const Profile = () => {
   const { height } = useWindowDimensions();
 
   useEffect(() => {
-    if (user && status !== "authorized") {
-      dispatch(postOAuthSuccess());
-    }
-
     if (!triedGetUser) {
       setTriedGetUser(true);
       dispatch(fetchCurrentUser());
     }
   }, [triedGetUser]);
+
+  useEffect(() => {
+    if (user && status !== "authorized") {
+      dispatch(postOAuthSuccess());
+    }
+  }, [user]);
 
   return (
     <div className="Profile container" style={{ minHeight: height }}>

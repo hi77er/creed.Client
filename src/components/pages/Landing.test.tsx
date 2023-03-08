@@ -1,15 +1,8 @@
-import React from 'react';
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from '../../app/store';
 import Landing from './Landing';
 
-test('renders learn react link', () => {
-  const { getByText } = render(
-    <Provider store={store}>
-      <Landing />
-    </Provider>
-  );
+test('renders title', () => {
+  const { getByText } = render(<Landing />);
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
+  expect(getByText(/Creed Template/i)).toBeInTheDocument();
 });

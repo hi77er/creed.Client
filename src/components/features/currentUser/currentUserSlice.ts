@@ -8,9 +8,10 @@ import {
 } from './currentUserAPI';
 
 const initialState: CurrentUserState = {
+  status: 'loading',
+  loginProvider: null,
   currentUser: null,
   errorMessage: null,
-  status: 'loading'
 };
 
 export const fetchCurrentUser =
@@ -21,7 +22,7 @@ export const fetchCurrentUser =
         const response = await fetchCurrentUserAsync();
         if (response.currentUser == '')
           return rejectWithValue({ errorMessage: "User not found!" });
-        return { user: response.currentUser };
+        return { user: response.currentUser, loginProvider: response.loginProvider };
       } catch (err: any) {
         return rejectWithValue({ errorMessage: "User not found!" });
       }
@@ -49,16 +50,19 @@ export const currentUserSlice = createSlice({
     builder
       .addCase(fetchCurrentUser.pending, (state) => {
         state.status = 'loading';
+        state.loginProvider = null;
         state.currentUser = null;
         state.errorMessage = null;
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.status = 'found';
+        state.loginProvider = action?.payload?.loginProvider ?? null;
         state.currentUser = action?.payload?.user ?? null;
         state.errorMessage = null;
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.status = 'notfound';
+        state.loginProvider = null;
         state.currentUser = null;
         state.errorMessage = action.payload?.errorMessage ?? null;
       });
@@ -70,8 +74,9 @@ export const { resetCurrentUser } = currentUserSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const errorMessage = (state: RootState) => state.currentUser.errorMessage;
-export const currentUser = (state: RootState) => state.currentUser.currentUser;
+export const errorMessage = (state: RootState) => state.currentUser?.errorMessage;
+export const currentUser = (state: RootState) => state.currentUser?.currentUser;
 export const userStatus = (state: RootState) => state.currentUser?.status;
+export const loginProvider = (state: RootState) => state.currentUser?.loginProvider;
 
 export default currentUserSlice.reducer;

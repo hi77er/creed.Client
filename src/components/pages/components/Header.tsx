@@ -1,15 +1,28 @@
+import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { authStatus, signout } from '../../features/authorize/authorizeSlice';
-import { currentUser, resetCurrentUser } from '../../features/currentUser/currentUserSlice';
+import { currentUser, loginProvider, resetCurrentUser } from '../../features/currentUser/currentUserSlice';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import './Header.css';
 
 const Header = () => {
+  const [signedInLabel, setSignedInLabel] = useState('');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const status = useAppSelector(authStatus);
   const user = useAppSelector(currentUser);
+  const provider = useAppSelector(loginProvider);
+
+  useEffect(() => {
+    setSignedInLabel(
+      provider === 'facebook'
+        || provider === 'github'
+        || provider === 'google'
+        ? `with ${provider.charAt(0).toUpperCase() + provider.slice(1)}`
+        : ''
+    );
+  }, [provider]);
 
   const logout = () => {
     dispatch(signout());
@@ -33,7 +46,7 @@ const Header = () => {
               status === 'authorized' && user != null
                 ? (
                   <NavDropdown
-                    title={`Signed in as: ${[user.firstName, user.lastName].join(' ')}`}
+                    title={`Signed in ${signedInLabel}: ${[user.firstName, user.lastName].join(' ')}`}
                     id={`offcanvasNavbarDropdown-expand-lg`}>
                     <NavDropdown.Item onClick={() => { navigate("/user") }}>Profile</NavDropdown.Item>
                     <NavDropdown.Divider />
