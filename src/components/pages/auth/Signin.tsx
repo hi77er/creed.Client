@@ -5,7 +5,7 @@ import {
   FacebookLoginButton,
   GoogleLoginButton,
   GithubLoginButton,
-  MicrosoftLoginButton,
+  // MicrosoftLoginButton,
 } from "react-social-login-buttons";
 import type { } from 'redux-thunk/extend-redux';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
