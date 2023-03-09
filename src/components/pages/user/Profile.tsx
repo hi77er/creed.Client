@@ -16,13 +16,13 @@ const Profile = () => {
       setTriedGetUser(true);
       dispatch(fetchCurrentUser());
     }
-  }, [triedGetUser]);
+  }, [triedGetUser, dispatch]);
 
   useEffect(() => {
     if (user && status !== "authorized") {
       dispatch(postOAuthSuccess());
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   return (
     <div className="Profile container" style={{ minHeight: height }}>

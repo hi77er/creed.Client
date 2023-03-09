@@ -28,7 +28,7 @@ const Signin = () => {
 
   useEffect(() => {
     dispatch(resetErrorMessage());
-  }, []);
+  }, [dispatch]);
 
   let loginWithEmail = (e: string, p: string) => {
     dispatch(fetchToken({ email: e, password: p }))
