@@ -20,7 +20,7 @@ export const fetchToken =
     'authorize/fetchToken',
     async (params: FetchTokenRequestBody, { rejectWithValue }) => {
       try {
-        const response = await fetchTokenAsync({
+        await fetchTokenAsync({
           email: params.email,
           password: params.password
         });

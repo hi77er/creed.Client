@@ -1,6 +1,4 @@
-import client from "../../../services/httpClient";
 import privateClient from "../../../services/privateHttpClient";
-import { store } from '../../../app/store';
 
 export interface User {
   id: string;
