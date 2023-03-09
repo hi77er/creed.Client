@@ -22,7 +22,7 @@ const Profile = () => {
     if (user && status !== "authorized") {
       dispatch(postOAuthSuccess());
     }
-  }, [user, dispatch]);
+  }, [user, status, dispatch]);
 
   return (
     <div className="Profile container" style={{ minHeight: height }}>
