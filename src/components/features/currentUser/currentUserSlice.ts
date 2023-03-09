@@ -20,7 +20,7 @@ export const fetchCurrentUser =
     async (_: void, { rejectWithValue }) => {
       try {
         const response = await fetchCurrentUserAsync();
-        if (response.currentUser == '')
+        if (response.currentUser === '')
           return rejectWithValue({ errorMessage: "User not found!" });
         return { user: response.currentUser, loginProvider: response.loginProvider };
       } catch (err: any) {
