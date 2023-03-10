@@ -1,0 +1,10 @@
+.email-signin-btn-container {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.google-signin-btn {
+  margin-bottom: 40px;
+}
