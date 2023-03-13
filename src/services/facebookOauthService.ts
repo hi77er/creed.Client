@@ -3,7 +3,8 @@ export const getFacebookUrl = (from: string) => {
 
   const options = {
     client_id: process.env.REACT_APP_FACEBOOK_OAUTH_CLIENT_ID as string,
-    redirect_uri: process.env.REACT_APP_FACEBOOK_OAUTH_REDIRECT as string,
+    redirect_uri:
+      `${process.env.REACT_APP_WEB_API_BASE_URL as string}${process.env.REACT_APP_FACEBOOK_OAUTH_REDIRECT as string}`,
     scope: ['public_profile', 'email',].join(' '),
     state: from,
   };
